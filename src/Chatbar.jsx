@@ -19,6 +19,10 @@ class Chatbar extends Component {
 
   onMessageKeyPress(event) {
     if (event.key === 'Enter') {
+      if (this.state.username !== this.props.username) {
+        this.props.systemMessage(this.props.username, this.state.username);
+        console.log(this.props.username, "user has changed", this.state.username);
+      }
       this.props.newMessage(this.state.username, this.state.messageText);
       this.setState({messageText: ''}, );
     }

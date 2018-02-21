@@ -8,24 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUser: {name: 'Bob'},
-      messages: [{
-        id: 0,
-        username: 'Bob',
-        type: 'user',
-        content: 'Has anyone seen my marbles?'
-      },
-      {
-        id: 1,
-        username: 'Anonymous',
-        type: 'user',
-        content: 'No, I think you lost them. You lost your marbles Bob. You lost them for good.'
-      },
-      {
-        id: 2,
-        type: 'system',
-        content: 'Anonymous1 changed their name to nomnom.'
-      }]
+      currentUser: {name: ''},
+      messages: []
     };
   }
 
@@ -43,6 +27,15 @@ class App extends Component {
     };
     console.log('about to send:', newMessageObj);
     this.socket.send(JSON.stringify(newMessageObj));
+  }
+
+  systemMessage(oldUser, newUser) {
+    const newMessageObj = {
+      type: 'system',
+      content: oldUser + ' changed their name to ' + newUser + '.'
+    };
+    this.socket.send(JSON.stringify(newMessageObj));
+    this.setState({currentUser: {name: newUser}});
   }
 
   componentDidMount() {
@@ -66,7 +59,7 @@ class App extends Component {
       <div>
       <Navbar />
       <MessageList messages={this.state.messages} />
-      <Chatbar username={this.state.currentUser.name} newMessage={this.newMessage.bind(this)} />
+      <Chatbar username={this.state.currentUser.name} newMessage={this.newMessage.bind(this)} systemMessage={this.systemMessage.bind(this)} />
       </div>
     );
   }
