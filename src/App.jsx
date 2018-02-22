@@ -8,17 +8,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeUsers: '',
       currentUser: {name: ''},
       messages: []
     };
   }
 
-// currentUser: {name: ''},
-// messages: [{
-// id: 0,
-// username: currentUser.name,
-// type: 'system' || 'user',
-// content: ''
   newMessage(userName, messageText) {
     const newMessageObj = {
       type: 'user',
@@ -45,19 +40,25 @@ class App extends Component {
     };
 
     this.socket.onmessage = (evt) => {
-      const newMessageObj = JSON.parse(evt.data);
-      console.log('received message from web socket:', newMessageObj);
-      const newMessages = this.state.messages.concat(newMessageObj);
-      this.setState({
-        messages: newMessages
-      });
+      const messageContainer = JSON.parse(evt.data);
+      if (messageContainer.messageType === 'message') {
+        const newMessageObj = messageContainer.payload;
+        console.log('received message from web socket:', newMessageObj);
+        const newMessages = this.state.messages.concat(newMessageObj);
+        this.setState({
+          messages: newMessages
+        });
+      } else if (messageContainer.messageType === 'userCount') {
+        const activeCount = messageContainer.payload;
+        this.setState({activeUsers: activeCount})
+    }
     };
   }
 
   render() {
     return (
       <div>
-      <Navbar />
+      <Navbar activeUsers={this.state.activeUsers} />
       <MessageList messages={this.state.messages} />
       <Chatbar username={this.state.currentUser.name} newMessage={this.newMessage.bind(this)} systemMessage={this.systemMessage.bind(this)} />
       </div>
