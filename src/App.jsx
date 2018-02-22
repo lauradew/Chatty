@@ -14,6 +14,8 @@ class App extends Component {
     };
   }
 
+  //creates new message Obj from user's input,
+  //assigns as user message and sends to socket server
   newMessage(userName, messageText) {
     const newMessageObj = {
       type: 'user',
@@ -23,7 +25,8 @@ class App extends Component {
     console.log('about to send:', newMessageObj);
     this.socket.send(JSON.stringify(newMessageObj));
   }
-
+  //creates message to show that user changed username,
+  //system messages are styled differently in scss
   systemMessage(oldUser, newUser) {
     const newMessageObj = {
       type: 'system',
@@ -41,6 +44,8 @@ class App extends Component {
 
     this.socket.onmessage = (evt) => {
       const messageContainer = JSON.parse(evt.data);
+      //distinguishes that data received from socket is a message,
+      //treats it as such to add message to state and display in "real time"
       if (messageContainer.messageType === 'message') {
         const newMessageObj = messageContainer.payload;
         console.log('received message from web socket:', newMessageObj);
@@ -48,6 +53,7 @@ class App extends Component {
         this.setState({
           messages: newMessages
         });
+        //sets "real time" active users count
       } else if (messageContainer.messageType === 'userCount') {
         const activeCount = messageContainer.payload;
         this.setState({activeUsers: activeCount})

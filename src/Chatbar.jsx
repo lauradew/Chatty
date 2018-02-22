@@ -9,16 +9,21 @@ class Chatbar extends Component {
     };
   }
 
+  //maintains that value in username field will be state of username
   onUserChange(event) {
     this.setState({username: event.target.value});
   }
 
+  //maintains that value in messageText field will be state of message content
   onMessageTextChange(event) {
     this.setState({messageText: event.target.value});
   }
 
+  //when message input is submitted by enter key,
+  //text and username sent through message functions coded in /App.jsx
   onMessageKeyPress(event) {
     if (event.key === 'Enter') {
+      //if username has changed from previous state, systemMessage runs
       if (this.state.username !== this.props.username) {
         this.props.systemMessage(this.props.username, this.state.username);
         console.log(this.props.username, "user has changed", this.state.username);

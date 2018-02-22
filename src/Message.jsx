@@ -7,6 +7,7 @@ class Message extends Component {
   }
 
   render() {
+    //filters between user and system messages to set class for styling purposes
     const className = 'message' + (this.props.system ? ' system' : '');
     return (
         <div className={className}>

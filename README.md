@@ -35,3 +35,5 @@ Chatty is s simple chatroom app to send messages between active users. Users can
 
 ## Final Product
 
+!["chatscreen"](https://github.com/lauradew/Chatty/blob/master/docs/chatty0.png?raw=true)
+!["oneuserleft"](https://github.com/lauradew/Chatty/blob/master/docs/chat1.png?raw=true)
